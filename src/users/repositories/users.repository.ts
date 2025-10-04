@@ -17,7 +17,6 @@ export class UsersRepository implements IUserRepository {
     const user = this.repo.create(dto);
     user.createdBy='origin';
     user.lastChangedBy='origin';
-    user.password='XXX'
     return this.repo.save(user);
   }
 
