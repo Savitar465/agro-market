@@ -14,23 +14,23 @@ export class UsersService implements IUsersService {
     private readonly repo: IUserRepository,
   ) {}
 
-  create(dto: CreateUserDto): User {
-    return this.repo.create(dto);
+  async create(dto: CreateUserDto): Promise<User> {
+    return await this.repo.create(dto);
   }
 
-  findAll(): User[] {
+  async findAll(): Promise<User[]> {
     return this.repo.findAll();
   }
 
-  findOne(id: number): User {
+  async findOne(id: string): Promise<User> {
     return this.repo.findOne(id);
   }
 
-  update(id: number, dto: UpdateUserDto): User {
+  async update(id: string, dto: UpdateUserDto): Promise<User> {
     return this.repo.update(id, dto);
   }
 
-  remove(id: number): void {
+  async remove(id: string): Promise<void> {
     return this.repo.remove(id);
   }
 }
