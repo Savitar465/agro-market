@@ -1,10 +1,12 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import {TypeOrmModuleOptions} from '@nestjs/typeorm';
+import {DocumentBuilder} from "@nestjs/swagger";
 
 require('dotenv').config();
 
 class ConfigService {
 
-  constructor(private env: { [k: string]: string | undefined }) { }
+  constructor(private readonly env: { [k: string]: string | undefined }) {
+  }
 
   private getValue(key: string, throwOnMissing = true): string {
     const value = this.env[key];
@@ -16,12 +18,10 @@ class ConfigService {
   }
 
   public ensureValues(keys: string[]) {
-    keys.forEach(k => this.getValue(k, true));
+    for (const k of keys) {
+      this.getValue(k, true);
+    }
     return this;
-  }
-
-  public getPort() {
-    return this.getValue('PORT', true);
   }
 
   public isProduction() {
@@ -30,11 +30,12 @@ class ConfigService {
   }
 
   public getTypeOrmConfig(): TypeOrmModuleOptions {
+    const isTsNode = (process.env.TS_NODE || '').toLowerCase() === 'true';
     return {
       type: 'postgres',
 
       host: this.getValue('POSTGRES_HOST'),
-      port: parseInt(this.getValue('POSTGRES_PORT')),
+      port: Number.parseInt(this.getValue('POSTGRES_PORT')),
       username: this.getValue('POSTGRES_USER'),
       password: this.getValue('POSTGRES_PASSWORD'),
       database: this.getValue('POSTGRES_DATABASE'),
@@ -43,11 +44,17 @@ class ConfigService {
 
       migrationsTableName: 'migration',
       synchronize: false,
-      migrations: ['src/migrations/*.ts'],
+      migrations: [isTsNode ? 'src/migrations/*.ts' : 'dist/migrations/*.js'],
 
       ssl: this.isProduction(),
     };
   }
+
+  public openApiConfig = new DocumentBuilder()
+    .setTitle('Market API')
+    .setDescription('The market API documentation')
+    .setVersion('1.0')
+    .build();
 
 }
 
@@ -60,4 +67,4 @@ const configService = new ConfigService(process.env)
     'POSTGRES_DATABASE'
   ]);
 
-export { configService };
+export {configService};
