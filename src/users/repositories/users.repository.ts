@@ -15,6 +15,9 @@ export class UsersRepository implements IUserRepository {
 
   async create(dto: CreateUserDto): Promise<User> {
     const user = this.repo.create(dto);
+    user.createdBy='origin';
+    user.lastChangedBy='origin';
+    user.password='XXX'
     return this.repo.save(user);
   }
 
