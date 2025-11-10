@@ -6,7 +6,7 @@ import { User } from '../entities/user.entity';
 import { USERS_REPOSITORY } from '../../common/tokens';
 import { IUserRepository } from '../repositories/users.repository.interface';
 import { IUsersService } from './users.service.interface';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService implements IUsersService {
   constructor(
@@ -21,6 +21,7 @@ export class UsersService implements IUsersService {
   async create(dto: CreateUserDto): Promise<User> {
     const user = await this.findOneByUsername(dto.username);
     if (user) throw new Error('User already exists');
+    dto.password = await bcrypt.hash(dto.password, await bcrypt.genSalt());
     return await this.repo.create(dto);
   }
 

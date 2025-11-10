@@ -3,9 +3,9 @@ import {UsersService} from "../../users/services/users.service";
 import {JwtService} from "@nestjs/jwt";
 import {IAuthService} from "./auth.service.interface";
 import {USERS_SERVICE} from "../../common/tokens";
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
-export class AuthService implements IAuthService{
+export class AuthService implements IAuthService {
 
   constructor(
     @Inject(USERS_SERVICE) private readonly usersService: UsersService,
@@ -15,10 +15,10 @@ export class AuthService implements IAuthService{
 
   async signIn(username: string, pass: string): Promise<{ access_token: string }> {
     const user = await this.usersService.findOneByUsername(username);
-    if (user?.password !== pass) {
+    if (await bcrypt.compare(pass,user!.password)) {
       throw new UnauthorizedException();
     }
-    const payload = {username: user.username, sub: user.id};
+    const payload = {username: user!.username, sub: user!.id, roles: user!.roles};
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

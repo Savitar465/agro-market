@@ -3,6 +3,9 @@ import {CreateUserDto} from '../dto/create-user.dto';
 import {UpdateUserDto} from '../dto/update-user.dto';
 import {IUsersService} from '../services/users.service.interface';
 import {USERS_SERVICE} from '../../common/tokens';
+import {Role} from "../../auth/rbac/role.enum";
+import {Roles} from "../../auth/rbac/roles.decorator";
+import { Public } from "src/auth/guards/public-auth.decorator";
 
 @Controller('users')
 export class UsersController {
@@ -10,11 +13,14 @@ export class UsersController {
   }
 
   @Post()
+  @Public()
+  // @Roles(Role.Admin)
   async create(@Body() dto: CreateUserDto) {
     return this.usersService.create(dto);
   }
 
   @Get()
+  @Roles(Role.Admin)
   findAll() {
     return this.usersService.findAll();
   }

@@ -1,5 +1,6 @@
 import {IsEmail, IsNotEmpty} from 'class-validator';
 import {ApiProperty} from "@nestjs/swagger";
+import {Role} from "../../auth/rbac/role.enum";
 
 export class CreateUserDto {
   @ApiProperty()
@@ -14,4 +15,7 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   password: string;
+  @ApiProperty()
+  @IsNotEmpty()
+  roles: Role[];
 }
