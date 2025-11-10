@@ -21,15 +21,15 @@ export class ProductsService implements IProductsService {
     return this.repo.findAll();
   }
 
-  findOne(id: number): Product {
+  findOne(id: string): Product {
     return this.repo.findOne(id);
   }
 
-  update(id: number, dto: UpdateProductDto): Product {
+  update(id: string, dto: UpdateProductDto): Product {
     return this.repo.update(id, dto);
   }
 
-  remove(id: number): void {
+  remove(id: string): void {
     return this.repo.remove(id);
   }
 }

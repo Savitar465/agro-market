@@ -14,7 +14,13 @@ export class UsersService implements IUsersService {
     private readonly repo: IUserRepository,
   ) {}
 
+  findOneByUsername(username: string): Promise<User|null> {
+    return this.repo.findOneByUsername(username);
+  }
+
   async create(dto: CreateUserDto): Promise<User> {
+    const user = await this.findOneByUsername(dto.username);
+    if (user) throw new Error('User already exists');
     return await this.repo.create(dto);
   }
 

@@ -5,7 +5,7 @@ import { Product } from '../entities/product.entity';
 export interface IProductRepository {
   create(dto: CreateProductDto): Product;
   findAll(): Product[];
-  findOne(id: number): Product;
-  update(id: number, dto: UpdateProductDto): Product;
-  remove(id: number): void;
+  findOne(id: string): Product;
+  update(id: string, dto: UpdateProductDto): Product;
+  remove(id: string): void;
 }

@@ -7,10 +7,10 @@ import { IProductRepository } from './products.repository.interface';
 @Injectable()
 export class ProductsRepository implements IProductRepository {
   private readonly products: Product[] = [];
-  private nextId = 1;
+  private nextId = '1';
 
   create(dto: CreateProductDto): Product {
-    const product: Product = { id: this.nextId++, ...dto };
+    const product: Product = { id: this.nextId, ...dto };
     this.products.push(product);
     return product;
   }
@@ -19,19 +19,19 @@ export class ProductsRepository implements IProductRepository {
     return [...this.products];
   }
 
-  findOne(id: number): Product {
+  findOne(id: string): Product {
     const product = this.products.find((p) => p.id === id);
     if (!product) throw new NotFoundException(`Product ${id} not found`);
     return product;
   }
 
-  update(id: number, dto: UpdateProductDto): Product {
+  update(id: string, dto: UpdateProductDto): Product {
     const product = this.findOne(id);
     Object.assign(product, dto);
     return product;
   }
 
-  remove(id: number): void {
+  remove(id: string): void {
     const idx = this.products.findIndex((p) => p.id === id);
     if (idx === -1) throw new NotFoundException(`Product ${id} not found`);
     this.products.splice(idx, 1);

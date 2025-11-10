@@ -5,23 +5,23 @@ export abstract class BaseEntity {
   id: string;
 
   @Column({ type: 'boolean', default: true })
-  isActive: boolean;
+  isActive?: boolean;
 
   @Column({ type: 'boolean', default: false })
-  isArchived: boolean;
+  isArchived?: boolean;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  createDateTime: Date;
+  createDateTime?: Date;
 
   @Column({ type: 'varchar', length: 300 })
-  createdBy: string;
+  createdBy?: string;
 
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  lastChangedDateTime: Date;
+  lastChangedDateTime?: Date;
 
   @Column({ type: 'varchar', length: 300 })
-  lastChangedBy: string;
+  lastChangedBy?: string;
 
   @Column({ type: 'varchar', length: 300, nullable: true })
-  internalComment: string | null;
+  internalComment?: string | null;
 }

@@ -28,8 +28,8 @@ describe('UsersService', () => {
   });
 
   it('should create user', () => {
-    const dto = { name: 'John', email: 'john@example.com' };
-    repo.create.mockReturnValue({ id: 1, ...dto });
+    const dto = { name: 'John', email: 'john@example.com', password: '123' };
+    repo.create.mockReturnValue({ id: '1', ...dto });
 
     const result = service.create(dto);
 
