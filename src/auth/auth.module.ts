@@ -7,6 +7,7 @@ import {jwtConstants} from "./constants";
 import {AUTH_SERVICE} from "../common/tokens";
 import {APP_GUARD} from "@nestjs/core";
 import {AuthGuard} from "./guards/auth.guard";
+import {TokenRevocationService} from './services/token-revocation.service';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import {AuthGuard} from "./guards/auth.guard";
   controllers: [AuthController],
   providers: [
     {provide: AUTH_SERVICE, useClass: AuthService},
+    TokenRevocationService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

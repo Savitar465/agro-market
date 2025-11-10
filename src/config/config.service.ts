@@ -1,7 +1,20 @@
 import {TypeOrmModuleOptions} from '@nestjs/typeorm';
 import {DocumentBuilder} from "@nestjs/swagger";
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 
-require('dotenv').config();
+// Load environment-specific .env file. Priority:
+// 1. process.env.MODE
+// 2. process.env.NODE_ENV
+// Fallback to 'development'
+const envName = (process.env.MODE || process.env.NODE_ENV || 'development').toString().toLowerCase();
+const envFile = path.resolve(process.cwd(), `.env.${envName}`);
+// Try to load the specific env file, then fallback to .env
+dotenv.config({ path: envFile });
+if (!process.env.POSTGRES_HOST) {
+  // fallback to generic .env if specific file missing or didn't set vars
+  dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+}
 
 class ConfigService {
 
